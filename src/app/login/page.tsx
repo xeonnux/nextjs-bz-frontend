@@ -1,13 +1,47 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useMutation } from '@tanstack/react-query';
 
-const Login = () => {
-  const [email, setEmail] = useState<String>('');
+interface Props {
+  url: string;
+  data: {
+    "user": {
+      "email": string;
+      "password": string;
+      "password_confirmation"?: string;
+    }
+  } | {
+    "user": {
+      "email": string;
+      "password": string;
+    }
+  };
+
+}
+
+const LoginPage = () => {
+  const mutation = useMutation({
+    mutationFn: ({ url, data }: Props) => {
+      return axios.post(url, data)
+        .then((response) => {
+          const { token, message, data, code } = response.data.status;
+          if (token) {
+            localStorage
+              .setItem('token', token + data.id);
+            data.email === undefined ? alert("Welcome " + data.user.email + ", " + message) : alert("Welcome " + data.email + ", " + message);
+            window.location.href = '/dashboard';
+          }
+          else {
+            alert("Error code: " + code + " | " + message);
+          }
+        });
+    },
+  })
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [submit, setSubmit] = useState('Sign Up');
-
   const [isSignup, setIsSignup] = useState(false);
 
   useEffect(() => {
@@ -18,10 +52,10 @@ const Login = () => {
     }
   }, [isSignup]);
 
-  const handleLogin = async (e: { preventDefault: () => void; }) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const loginUrl = 'http://localhost:3000/login';
-    const signupUrl = 'http://localhost:3000/signup';
+    const loginUrl = 'http://localhost:3001/login';
+    const signupUrl = 'http://localhost:3001/signup';
     const loginData = {
       "user": {
         "email": email,
@@ -39,18 +73,7 @@ const Login = () => {
 
     const endpoint = isSignup ? { url: signupUrl, data: signupData } : { url: loginUrl, data: loginData };
 
-    try {
-      const response = await axios.post(endpoint.url, endpoint.data);
-      const { token } = response.data;
-      // Assuming you have a function to save the token to localStorage
-      localStorage.setItem('token', token);
-      // Redirect the user to dashboard or any other page
-      alert('Login successful');
-      window.location.href = '/home';
-    } catch (error) {
-      console.error('Login failed:', error);
-      // Handle login failure (display error message, etc.)
-    }
+    mutation.mutate(endpoint);
   };
 
   return (
@@ -94,4 +117,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default LoginPage

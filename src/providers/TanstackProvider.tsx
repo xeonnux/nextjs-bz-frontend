@@ -1,5 +1,5 @@
 'use client'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import {
   QueryClient,
   QueryClientProvider,
@@ -11,9 +11,10 @@ const queryClient = new QueryClient();
 
 
 const TanstackProvider = ({ children }: { children: ReactNode }) => {
+  const [currentUser, setCurrentUser]=useState<String>("");
   return (
     <QueryClientProvider client={queryClient}>
-      <NavBar />
+      <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
       {children}
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

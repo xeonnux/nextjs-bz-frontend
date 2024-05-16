@@ -34,3 +34,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+https://medium.com/@villysiu/authenticate-user-with-devise-gem-and-devise-jwt-in-react-application-1-2-a869477a2cb3
+https://medium.com/@villysiu/authenticate-user-with-devise-gem-and-devise-jwt-in-react-application-2-2-98eff841ec88
+https://dev.to/delisrey/fetching-mutating-data-with-react-query-395f
+https://www.sitepoint.com/react-cookies-sessions/
+https://github.com/waiting-for-dev/devise-jwt
+
